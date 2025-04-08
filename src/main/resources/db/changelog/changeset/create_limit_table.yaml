@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 03
+      author: postgres
+      changes:
+        - createTable:
+            tableName: limit
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: monthly_limit
+                  type: decimal
+              - column:
+                  name: used_this_month
+                  type: decimal
+              - column:
+                  name: last_reset
+                  type: timestamp
+              - column:
+                  name: card_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    unique: true
+        - addForeignKeyConstraint:
+            baseTableName: limit
+            baseColumnNames: card_id
+            constraintName: fk_limit_card
+            referencedTableName: cards
+            referencedColumnNames: id

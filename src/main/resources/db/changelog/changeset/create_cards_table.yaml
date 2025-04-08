@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 02
+      author: postgres
+      changes:
+        - createTable:
+            tableName: cards
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: number
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: owner_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expiry_date
+                  type: varchar(7)
+              - column:
+                  name: status
+                  type: varchar(255)
+              - column:
+                  name: balance
+                  type: decimal
+        - addForeignKeyConstraint:
+            baseTableName: cards
+            baseColumnNames: owner_id
+            constraintName: fk_cards_owner
+            referencedTableName: users
+            referencedColumnNames: id

@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: classpath:/db/changelog/changeset/create_users_table.yaml
+  - include:
+      file: classpath:/db/changelog/changeset/create_cards_table.yaml
+  - include:
+      file: classpath:/db/changelog/changeset/create_limit_table.yaml
+  - include:
+      file: classpath:/db/changelog/changeset/create_transactions_table.yaml
