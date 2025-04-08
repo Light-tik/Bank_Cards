@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: Bank_Cards
+
+  datasource:
+    url: jdbc:postgresql://localhost:5435/postgres_DB
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
+    hikari:
+      schema: public
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+token:
+  jwt:
+    key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855
+    expiration: 300000000
