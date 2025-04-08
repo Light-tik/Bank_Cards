@@ -21,7 +21,6 @@ public class BaseResponse {
 
     private List<Integer> codes;
 
-
     public BaseResponse(Integer statusCode) {
         this.statusCode = statusCode;
     }
