@@ -52,4 +52,3 @@ public class AuthController {
         return ResponseEntity.ok(new CustomResponse<>(authService.loginUser(user)));
     }
 }
-

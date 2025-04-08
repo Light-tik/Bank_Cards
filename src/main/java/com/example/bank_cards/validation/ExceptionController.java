@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,9 +28,15 @@ public class ExceptionController {
             CustomException e,
             HttpServletRequest request
     ) {
-        request.setAttribute(MyConstants.ERROR_MESSAGE, e.getMessage());
+        HttpStatus status = switch (e.getErrorCodes()) {
+            case USER_NOT_FOUND -> HttpStatus.NOT_FOUND;
+            case PASSWORD_NOT_VALID -> HttpStatus.UNAUTHORIZED;
+            case USER_ALREADY_EXISTS -> HttpStatus.BAD_REQUEST;
+            case NO_RIGHTS -> HttpStatus.FORBIDDEN;
+            default -> HttpStatus.BAD_REQUEST;
+        };
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(status)
                 .body(new BaseResponse(e.getErrorCodes().getCode()));
     }
 

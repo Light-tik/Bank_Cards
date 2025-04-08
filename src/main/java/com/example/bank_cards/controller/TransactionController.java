@@ -1,5 +1,6 @@
 package com.example.bank_cards.controller;
 
+import com.example.bank_cards.dto.request.SignUpRequest;
 import com.example.bank_cards.dto.request.TransactionRequest;
 import com.example.bank_cards.dto.response.BaseResponse;
 import com.example.bank_cards.dto.response.CustomResponse;
@@ -46,6 +47,10 @@ public class TransactionController {
     })
     @PostMapping("/transfer")
     public ResponseEntity<CustomResponse<TransactionResponse>> transferBetweenCards(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = TransactionRequest.class))
+            )
             @Valid @RequestBody TransactionRequest request) {
         return ResponseEntity.ok(new CustomResponse<>(transactionService.transfer(request)));
     }

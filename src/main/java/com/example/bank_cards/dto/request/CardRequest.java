@@ -1,5 +1,6 @@
 package com.example.bank_cards.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
@@ -29,9 +30,10 @@ public class CardRequest {
     @Pattern(regexp = "\\d{16}", message = "Номер карты должен состоять из 16 цифр")
     private String cardNumber;
 
-    @Schema(description = "Срок действия карты (в формате YYYY-MM)", requiredMode = Schema.RequiredMode.REQUIRED, example = "2030-12")
+    @Schema(description = "Срок действия карты (в формате MM/YYYY)", requiredMode = Schema.RequiredMode.REQUIRED, example = "2030-12")
     @NotNull(message = "Срок действия карты обязателен")
-    @Future(message = "Срок действия должен быть в будущем")
-    private YearMonth expiryDate;
+    @Pattern(regexp = "^([1-9]|1[012])/(\\d{4})$",
+            message = "Неверный формат даты. Используйте формат ММ/ГГГГ")
+    private String expiryDate;
 }
 

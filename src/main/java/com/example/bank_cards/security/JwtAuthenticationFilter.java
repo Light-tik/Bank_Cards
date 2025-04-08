@@ -24,9 +24,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     public static final String BEARER_PREFIX = "Bearer ";
     public static final String HEADER_NAME = "Authorization";
-    public static final String AUTH_ENDPOINT = "/auth";
 
     private final JwtService jwtService;
+
+    private static final List<String> WHITELISTED_ENDPOINTS = List.of(
+            "/api/auth/sign-up",
+            "/api/auth/sign-in",
+            "/swagger-ui",
+            "/v3/api-docs"
+    );
 
     @Override
     protected void doFilterInternal(
@@ -34,30 +40,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        if (request.getRequestURI().startsWith(AUTH_ENDPOINT)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        logger.debug("Request URI: " + request.getRequestURI());
+
         String uri = request.getRequestURI();
-        if (uri.startsWith("/swagger-ui") ||
-                uri.startsWith("/swagger-ui.html") ||
-                uri.startsWith("/v3/api-docs")) {
+
+        if (WHITELISTED_ENDPOINTS.stream().anyMatch(uri::startsWith)) {
             filterChain.doFilter(request, response);
             return;
         }
 
         String authHeader = request.getHeader(HEADER_NAME);
 
-        if (StringUtils.isEmpty(authHeader)) {
+        if (StringUtils.isEmpty(authHeader) || !authHeader.startsWith(BEARER_PREFIX)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            logger.debug("нет префикса авторизация");
-            return;
-        }
-
-        if (!authHeader.startsWith(BEARER_PREFIX)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            logger.debug("нет префикса Bearer");
             return;
         }
 
@@ -70,24 +64,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             String username = jwtService.getUsernameFromToken(jwt);
+            String role = jwtService.getRoleFromToken(jwt);
 
             if (StringUtils.isNotEmpty(username)) {
-                String role = jwtService.getRoleFromToken(jwt);
-
-                List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
-
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         username,
                         null,
-                        authorities
+                        List.of(new SimpleGrantedAuthority(role))
                 );
-
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
-        } catch (IllegalArgumentException | MalformedJwtException e) {
+
+        } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            logger.debug("токен не валиден");
             return;
         }
 

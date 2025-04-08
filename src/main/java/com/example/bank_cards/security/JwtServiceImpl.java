@@ -35,7 +35,7 @@ public class JwtServiceImpl implements JwtService {
 
         return "Bearer " + Jwts.builder()
                 .issuer("Bank Cards")
-                .subject(user.getUsername())
+                .subject(user.getEmail())
                 .claims(claims)
                 .issuedAt(issuedAt)
                 .expiration(expiration)

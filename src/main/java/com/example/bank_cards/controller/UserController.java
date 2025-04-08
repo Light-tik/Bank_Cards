@@ -28,7 +28,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/user")
+@RequestMapping("api/admin/users")
 @Tag(name = "Пользователи", description = "Управление пользователями и их информацией")
 public class UserController {
 
@@ -41,7 +41,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Список пользователей успешно получен"),
             @ApiResponse(responseCode = "403", description = "Доступ запрещен", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class)))
     })
-    @GetMapping("/admin/user")
+    @GetMapping
     public ResponseEntity<CustomResponse<List<PublicUserView>>> getAll() {
         return ResponseEntity.ok().body(new CustomResponse<>(userService.getListUsers()));
     }
@@ -51,7 +51,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Информация о пользователе получена"),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class)))
     })
-    @GetMapping("/admin/user/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<CustomResponse<PublicUserView>> getUserInfoById(
             @Parameter(description = "ID пользователя", required = true)
             @PathVariable UUID id) {

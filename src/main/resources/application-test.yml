@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:15:///test_db
+    username: test
+    password: test
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    enabled: false
+
+logging:
+  level:
+    root: WARN
+    org.springframework.test.context: DEBUG
+    org.springframework.security: DEBUG

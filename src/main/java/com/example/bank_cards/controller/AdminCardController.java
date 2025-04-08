@@ -49,7 +49,7 @@ public class AdminCardController {
             @ApiResponse(responseCode = "200", description = "Список карт успешно получен"),
             @ApiResponse(responseCode = "400", description = "Ошибка валидации данных", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class)))
     })
-    @GetMapping
+    @GetMapping("/page")
     public ResponseEntity<CustomResponse<PageableResponse<CardResponse>>> getAllCards(
             @Parameter(description = "Номер страницы (от 1)") @RequestParam @Positive Integer page,
             @Parameter(description = "Количество элементов на странице") @RequestParam @Positive Integer perPage) {

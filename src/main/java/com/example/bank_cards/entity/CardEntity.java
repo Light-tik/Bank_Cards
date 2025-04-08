@@ -9,7 +9,6 @@ import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import java.time.YearMonth;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,14 +31,10 @@ public class CardEntity {
     @JoinColumn(name = "owner_id", nullable = false)
     private UserEntity owner;
 
-    private YearMonth expiryDate;
+    private String expiryDate;
 
     @Enumerated(EnumType.STRING)
     private StatusCard status;
 
     private Double balance;
-
-    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Fetch(FetchMode.SELECT)
-    private List<TransactionEntity> transactions;
 }

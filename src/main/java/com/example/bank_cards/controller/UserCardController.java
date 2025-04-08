@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/cards")
+@RequestMapping("api/user/cards")
 @RequiredArgsConstructor
 @Validated
 @Tag(name = "Управление картами пользователя", description = "Методы для работы с картами пользователя")

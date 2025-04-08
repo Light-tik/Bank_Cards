@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.YearMonth;
 import java.util.UUID;
 
 @Getter
@@ -27,7 +26,7 @@ public class CardResponse {
     private UUID ownerId;
 
     @Schema(description = "Срок действия карты", example = "2027-08")
-    private YearMonth expiryDate;
+    private String expiryDate;
 
     @Schema(description = "Статус карты", example = "ACTIVE")
     private StatusCard status;

@@ -16,6 +16,7 @@ public interface CardMapper {
     @Mapping(target = "status", constant = "ACTIVE")
     @Mapping(target = "number", expression = "java(encryptionService.encrypt(request.getCardNumber()))")
     @Mapping(target = "owner", ignore = true)
+    @Mapping(target = "expiryDate", source = "request.expiryDate")
     CardEntity toEntity(CardRequest request, @Context CardEncryptionService encryptionService);
 
     @Mapping(target = "maskedNumber", expression = "java(encryptionService.mask(card.getNumber()))")
